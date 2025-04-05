@@ -35,13 +35,20 @@ const validate = (req, res, next) => {
 
 // ✅ CREATE a new access log entry
 router.post("/", accessLogsValidationRules, validate, async (req, res) => {
-  const { batch_number, product_name, latitude, longitude, address } = req.body;
+  const {
+    batch_number,
+    product_name,
+    latitude,
+    longitude,
+    address,
+    accessed_at,
+  } = req.body;
 
   try {
     const newAccessLog = await pool.query(
-      `INSERT INTO access_logs (batch_number, product_name, latitude, longitude, address) 
-       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-      [batch_number, product_name, latitude, longitude, address]
+      `INSERT INTO access_logs (batch_number, product_name, latitude, longitude, address, accessed_at) 
+       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+      [batch_number, product_name, latitude, longitude, address, accessed_at]
     );
 
     res.status(201).json({
