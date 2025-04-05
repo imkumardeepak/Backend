@@ -45,5 +45,24 @@ const createBatchProductionTable = async () => {
   }
 };
 
+const createAccessLogsTable = async () => {
+  const query = `
+        CREATE TABLE IF NOT EXISTS access_logs (
+            id SERIAL PRIMARY KEY,
+            latitude DECIMAL(10, 8), -- Stores latitude with high precision
+            longitude DECIMAL(11, 8), -- Stores longitude with high precision
+            address VARCHAR(255), -- Stores the human-readable location name
+            accessed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- When the access occurred
+        );
+    `;
+  try {
+    await pool.query(query);
+    console.log("Access Logs table created ✅");
+  } catch (error) {
+    console.error("Error creating Access Logs table ❌", error);
+  }
+};
+
 createProductTable();
 createBatchProductionTable();
+createAccessLogsTable();

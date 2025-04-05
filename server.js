@@ -5,7 +5,7 @@ const axios = require("axios");
 const https = require("https");
 const productRoutes = require("./Controllers/productRoutes");
 const batchRoutes = require("./Controllers/BatchRoutes");
-
+const accessLogsRoutes = require("./Controllers/accessLogs");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -23,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 // Existing routes
 app.use("/api/products", productRoutes);
 app.use("/api/batches", batchRoutes);
+app.use("/api/access-logs", accessLogsRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
