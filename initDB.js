@@ -49,6 +49,8 @@ const createAccessLogsTable = async () => {
   const query = `
         CREATE TABLE IF NOT EXISTS access_logs (
             id SERIAL PRIMARY KEY,
+            batch_number VARCHAR(255),
+            product_name VARCHAR(255),
             latitude DECIMAL(10, 8), -- Stores latitude with high precision
             longitude DECIMAL(11, 8), -- Stores longitude with high precision
             address VARCHAR(255), -- Stores the human-readable location name

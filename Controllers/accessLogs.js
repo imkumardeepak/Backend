@@ -6,6 +6,8 @@ const router = express.Router();
 
 // Validation middleware for access_logs
 const accessLogsValidationRules = [
+  check("batch_number", "Batch number is required").notEmpty().isString(),
+  check("product_name", "Product name is required").notEmpty().isString(),
   check("latitude", "Latitude must be a valid number")
     .isFloat({ min: -90, max: 90 })
     .notEmpty(),
@@ -33,13 +35,13 @@ const validate = (req, res, next) => {
 
 // ✅ CREATE a new access log entry
 router.post("/", accessLogsValidationRules, validate, async (req, res) => {
-  const { latitude, longitude, address } = req.body;
+  const { batch_number, product_name, latitude, longitude, address } = req.body;
 
   try {
     const newAccessLog = await pool.query(
-      `INSERT INTO access_logs (latitude, longitude, address) 
-       VALUES ($1, $2, $3) RETURNING *`,
-      [latitude, longitude, address]
+      `INSERT INTO access_logs (batch_number, product_name, latitude, longitude, address) 
+       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [batch_number, product_name, latitude, longitude, address]
     );
 
     res.status(201).json({
@@ -109,13 +111,13 @@ router.get("/:id", async (req, res) => {
 // ✅ UPDATE an access log by ID
 router.put("/:id", accessLogsValidationRules, validate, async (req, res) => {
   const { id } = req.params;
-  const { latitude, longitude, address } = req.body;
+  const { batch_number, product_name, latitude, longitude, address } = req.body;
 
   try {
     const updatedAccessLog = await pool.query(
       `UPDATE access_logs 
-       SET latitude = $1, longitude = $2, address = $3
-       WHERE id = $4 RETURNING *`,
+       SET batch_number = $1, product_name = $2, latitude = $3, longitude = $4, address = $5
+       WHERE id = $6 RETURNING *`,
       [latitude, longitude, address, id]
     );
 
