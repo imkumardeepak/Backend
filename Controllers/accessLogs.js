@@ -118,7 +118,7 @@ router.put("/:id", accessLogsValidationRules, validate, async (req, res) => {
       `UPDATE access_logs 
        SET batch_number = $1, product_name = $2, latitude = $3, longitude = $4, address = $5
        WHERE id = $6 RETURNING *`,
-      [latitude, longitude, address, id]
+      [batch_number, product_name, latitude, longitude, address, id]
     );
 
     if (updatedAccessLog.rows.length === 0) {
